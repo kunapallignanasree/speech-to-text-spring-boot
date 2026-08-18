@@ -2,9 +2,7 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
-
-# Check if pom.xml is in subfolder or root, then build
-RUN if [ -f "./pom.xml" ]; then mvn clean package -DskipTests; else cd speech && mvn clean package -DskipTests && cp -r target /app/; fi
+RUN mvn clean package -DskipTests
 
 # Step 2: Runtime stage
 FROM eclipse-temurin:17-jre

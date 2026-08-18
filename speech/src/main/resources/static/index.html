@@ -3,287 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Multilingual Speech Transcriber</title>
-    <!-- Google Fonts & FontAwesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>AI Multilingual Transcriber</title>
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --danger: #ef4444;
-            --danger-hover: #dc2626;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
-
         body {
-            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
-            min-height: 100vh;
+            background-color: #f3f4f6;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            margin: 0;
             padding: 20px;
         }
-
         .card {
-            background: var(--card-bg);
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 650px;
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            border: 1px solid var(--border);
-        }
-
-        .header {
+            max-width: 600px;
             text-align: center;
-            margin-bottom: 25px;
         }
-
-        .header h1 {
-            font-size: 1.8rem;
-            color: var(--text-main);
-            font-weight: 700;
-            letter-spacing: -0.5px;
+        h1 {
+            font-size: 24px;
+            color: #111827;
+            margin-bottom: 6px;
         }
-
-        .header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-top: 6px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            background: #f1f5f9;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
+        p.subtitle {
+            color: #6b7280;
+            font-size: 14px;
             margin-bottom: 20px;
-            transition: all 0.3s ease;
         }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #94a3b8;
+        .status-badge {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background-color: #e5e7eb;
+            color: #374151;
+            margin-bottom: 24px;
         }
-
-        .status-badge.recording .status-dot {
-            background: var(--danger);
-            animation: pulse 1.2s infinite;
-        }
-
         .status-badge.recording {
-            background: #fef2f2;
-            color: var(--danger);
+            background-color: #fee2e2;
+            color: #dc2626;
+            animation: pulse 1.5s infinite;
         }
-
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-
-        .button-group {
+        .btn-group {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 8px;
+            margin-bottom: 24px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        #recordBtn {
+            background-color: #2563eb;
+            color: #ffffff;
         }
-
-        .btn-primary:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
+        #recordBtn:hover {
+            background-color: #1d4ed8;
         }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
-        }
-
-        .btn-danger:hover {
-            background: var(--danger-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn:disabled {
-            background: #e2e8f0;
-            color: #94a3b8;
+        #stopBtn {
+            background-color: #e5e7eb;
+            color: #9ca3af;
             cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
         }
-
-        .output-box {
-            position: relative;
+        #stopBtn.active {
+            background-color: #ef4444;
+            color: #ffffff;
+            cursor: pointer;
         }
-
+        #stopBtn.active:hover {
+            background-color: #dc2626;
+        }
         textarea {
             width: 100%;
-            height: 160px;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: #f8fafc;
-            font-size: 1rem;
-            color: var(--text-main);
-            outline: none;
-            resize: none;
-            transition: border-color 0.2s ease;
+            height: 180px;
+            padding: 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
             line-height: 1.5;
+            resize: none;
+            outline: none;
+            background-color: #f9fafb;
+            color: #1f2937;
         }
-
         textarea:focus {
-            border-color: var(--primary);
-            background: white;
+            border-color: #2563eb;
+            background-color: #ffffff;
         }
-
-        .footer-note {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #9ca3af;
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="header">
-        <h1>AI Multilingual Transcriber</h1>
-        <p>Speak in English, Telugu, or Hindi seamlessly</p>
+    <h1>AI Multilingual Transcriber</h1>
+    <p class="subtitle">Speak in English, Telugu, or Hindi seamlessly</p>
+
+    <div id="statusBadge" class="status-badge">Ready to record</div>
+
+    <div class="btn-group">
+        <button id="recordBtn">🎙️ Start Recording</button>
+        <button id="stopBtn" disabled>⏹️ Stop & Transcribe</button>
     </div>
 
-    <div style="text-align: center;">
-        <div id="statusBadge" class="status-badge">
-            <span class="status-dot"></span>
-            <span id="statusText">Ready to Record</span>
-        </div>
-    </div>
+    <textarea id="transcriptionOutput" placeholder="Your transcription in native script will appear here..." readonly></textarea>
 
-    <div class="button-group">
-        <button id="startBtn" class="btn btn-primary" onclick="startRecording()">
-            <i class="fa-solid fa-microphone"></i> Start Recording
-        </button>
-        <button id="stopBtn" class="btn btn-danger" onclick="stopRecording()" disabled>
-            <i class="fa-solid fa-square"></i> Stop & Transcribe
-        </button>
-    </div>
-
-    <div class="output-box">
-        <textarea id="outputTextArea" placeholder="Your spoken text will auto-transcribe in English, తెలుగు, or हिंदी script..." readonly></textarea>
-    </div>
-
-    <div class="footer-note">
-        Powered by OpenAI Whisper & Spring Boot
-    </div>
+    <div class="footer">Powered by OpenAI Whisper & Spring Boot</div>
 </div>
 
 <script>
     let mediaRecorder;
     let audioChunks = [];
 
-    async function startRecording() {
-        audioChunks = [];
+    const recordBtn = document.getElementById('recordBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const statusBadge = document.getElementById('statusBadge');
+    const output = document.getElementById('transcriptionOutput');
+
+    recordBtn.addEventListener('click', async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
 
-            mediaRecorder.ondataavailable = event => {
-                audioChunks.push(event.data);
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
             };
 
-            mediaRecorder.onstop = sendAudioToBackend;
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                await sendAudioToServer(audioBlob);
+            };
 
             mediaRecorder.start();
-
-            // UI Updates
-            const badge = document.getElementById("statusBadge");
-            badge.classList.add("recording");
-            document.getElementById("statusText").innerText = "Listening... Speak Now";
-            document.getElementById("startBtn").disabled = true;
-            document.getElementById("stopBtn").disabled = false;
-            document.getElementById("outputTextArea").value = "";
+            recordBtn.disabled = true;
+            stopBtn.disabled = false;
+            stopBtn.classList.add('active');
+            statusBadge.classList.add('recording');
+            statusBadge.innerText = '🔴 Recording... Speak now';
         } catch (err) {
-            alert("Microphone access denied or not supported.");
+            alert('Microphone access denied or not supported.');
         }
-    }
+    });
 
-    function stopRecording() {
-        mediaRecorder.stop();
-        
-        // UI Updates
-        const badge = document.getElementById("statusBadge");
-        badge.classList.remove("recording");
-        document.getElementById("statusText").innerText = "Transcribing with Whisper...";
-        document.getElementById("startBtn").disabled = false;
-        document.getElementById("stopBtn").disabled = true;
-    }
+    stopBtn.addEventListener('click', () => {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+            recordBtn.disabled = false;
+            stopBtn.disabled = true;
+            stopBtn.classList.remove('active');
+            statusBadge.classList.remove('recording');
+            statusBadge.innerText = '⏳ Processing audio...';
+        }
+    });
 
-    function sendAudioToBackend() {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+    async function sendAudioToServer(blob) {
         const formData = new FormData();
-        formData.append("file", audioBlob, "recording.webm");
+        formData.append('file', blob, 'audio.webm');
 
-        fetch('/api/speech/transcribe', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text()) // Get raw response string first
-        .then(responseText => {
-            try {
-                // Parse JSON response from Whisper
-                const data = JSON.parse(responseText);
-                document.getElementById("outputTextArea").value = data.text || responseText;
-            } catch (e) {
-                // Fallback for plain text response
-                document.getElementById("outputTextArea").value = responseText;
+        try {
+            const response = await fetch('/api/speech/transcribe', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                output.value = data.text;
+                statusBadge.innerText = '● Transcription Complete!';
+            } else {
+                const errText = await response.text();
+                output.value = 'Error: ' + errText;
+                statusBadge.innerText = '⚠️ Failed';
             }
-            document.getElementById("statusText").innerText = "Transcription Complete!";
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            document.getElementById("statusText").innerText = "Error during transcription.";
-        });
+        } catch (error) {
+            output.value = 'Server Error: ' + error.message;
+            statusBadge.innerText = '⚠️ Failed';
+        }
     }
 </script>
 
